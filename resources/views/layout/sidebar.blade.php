@@ -3,7 +3,7 @@
         <div class="m-header">
             <a href="index-2.html" class="b-brand text-primary">
                 <!-- ========   Change your logo from here   ============ -->
-                <img src="{{ asset('dashboard') }}/assets/images/logos.svg" alt="logo image" />
+                {{-- <img src="{{ asset('dashboard') }}/assets/images/logos.svg" alt="logo image" /> --}}
                 <span class="badge bg-brand-color-2 rounded-pill ms-2 theme-version">KKH Online</span>
             </a>
         </div>
@@ -50,8 +50,8 @@
             <div class="card nav-action-card bg-brand-color-4">
                 <div class="card-body"
                     style="background-image: url('{{ asset('dashboard') }}/assets/images/layout/nav-card-bg.svg')">
-                    <h5 class="text-dark">POKA Android</h5>
-                    <p class="text-dark text-opacity-75">Silakan unduh aplikasi dibawah ini</p>
+                    <h5 class="text-dark">Web Test</h5>
+                    <p class="text-dark text-opacity-75">Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
                     <a href="https://google.com/" class="btn btn-primary" target="_blank">Unduh</a>
                 </div>
             </div>
@@ -83,26 +83,21 @@
                                 <ul>
                                     <li>
                                         <a class="pc-user-links">
-                                            <i class="ph-duotone ph-user"></i>
-                                            <span>My Account</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="pc-user-links">
                                             <i class="ph-duotone ph-gear"></i>
                                             <span>Settings</span>
                                         </a>
                                     </li>
+
                                     <li>
-                                        <a class="pc-user-links">
-                                            <i class="ph-duotone ph-lock-key"></i>
-                                            <span>Lock Screen</span>
+                                        <a href="{{ route('auth.logout') }}" class="pc-user-links">
+                                            <i class="ph-duotone ph-power"></i>
+                                            <span>Logout</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a class="pc-user-links">
-                                            <i class="ph-duotone ph-power"></i>
-                                            <span>Logout</span>
+                                            <i class="ph-duotone ph-key"></i>
+                                            <span>Ganti Password</span>
                                         </a>
                                     </li>
                                 </ul>

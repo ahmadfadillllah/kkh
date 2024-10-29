@@ -1,4 +1,4 @@
-//License MIT by Ahmad Fadillah
+<!-- License MIT by Ahmad Fadillah -->
 <!doctype html>
 <html lang="en">
 
@@ -18,6 +18,8 @@
     <!-- data tables css -->
     <link rel="stylesheet" href="{{ asset('dashboard') }}/assets/css/plugins/dataTables.bootstrap5.min.css" />
 
+    <!-- [Page specific CSS] start -->
+    <link rel="stylesheet" href="{{ asset('dashboard') }}/assets/css/plugins/flatpickr.min.css" />
     <!-- map-vector css -->
     <link rel="stylesheet" href="{{ asset('dashboard') }}/assets/css/plugins/jsvectormap.min.css" />
     <!-- [Google Font : Public Sans] icon -->
@@ -36,6 +38,7 @@
     <!-- [Template CSS Files] -->
     <link rel="stylesheet" href="{{ asset('dashboard') }}/assets/css/style.css" id="main-style-link" />
     <link rel="stylesheet" href="{{ asset('dashboard') }}/assets/css/style-preset.css" />
+
 
 </head>
 

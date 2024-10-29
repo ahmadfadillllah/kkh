@@ -2,8 +2,8 @@
     <div class="footer-wrapper container-fluid">
         <div class="row">
             <div class="col-sm-6 my-1">
-                <p class="m-0">Copyright with &copy; by IT Team <a href="https://ahmadfadillah.my.id"
-                        target="_blank"> PT. SIMS JAYA KALTIM</a></p>
+                {{-- <p class="m-0">Copyright with &copy; by IT Team <a href="https://ahmadfadillah.my.id"
+                        target="_blank"> PT. SIMS JAYA KALTIM</a></p> --}}
             </div>
             <div class="col-sm-6 ms-auto my-1">
                 <ul class="list-inline footer-link mb-0 justify-content-sm-end d-flex">
@@ -213,9 +213,36 @@
 <script src="{{ asset('dashboard') }}/assets/js/pages/w-chart.js"></script>
 
 <!-- datatable Js -->
-<script src="{{ asset('dashboard') }}/assets/js/plugins/jquery.min.js"></script>
+<script src="{{ asset('dashboard') }}/assets/js/jquery-3.6.0.js"></script>
+<script src="{{ asset('dashboard') }}/assets/js/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('dashboard') }}/assets/js/plugins/dataTables.min.js"></script>
 <script src="{{ asset('dashboard') }}/assets/js/plugins/dataTables.bootstrap5.min.js"></script>
+<script src="{{ asset('dashboard') }}/assets/js/dataTables.responsive.min.js"></script>
+<script src="{{ asset('dashboard') }}/assets/js/plugins/flatpickr.min.js"></script>
+    <script>
+      // minimum setup
+      flatpickr(document.querySelector('#pc-date_range_picker-1'), {
+        mode: 'range'
+      });
+      flatpickr(document.querySelector('#pc-date_range_picker-2'), {
+        mode: 'range'
+      });
+      flatpickr(document.querySelector('#pc-date_range_picker-3'), {
+        mode: 'range',
+        minDate: 'today',
+        dateFormat: 'Y-m-d',
+        disable: [
+          function (date) {
+            return !(date.getDate() % 8);
+          }
+        ]
+      });
+      flatpickr(document.querySelector('#pc-date_range_picker-4'), {
+        mode: 'range',
+        dateFormat: 'Y-m-d',
+        defaultDate: ['2016-10-10', '2016-10-20']
+      });
+    </script>
 <script>
     // [ DOM/jquery ]
     var total, pageTotal;
@@ -347,6 +374,7 @@
     });
 
 </script>
+
 
 <script>
     layout_change('light');
