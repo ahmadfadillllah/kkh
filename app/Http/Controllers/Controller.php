@@ -10,7 +10,7 @@ abstract class Controller
 
     public function __construct()
     {
-        $serviceAccount = base_path('application-63b0a-firebase-adminsdk-zwnhv-0af0222886.json');
+        $serviceAccount = storage_path('application-63b0a-firebase-adminsdk-zwnhv-0af0222886.json');
 
         $factory = (new Factory)
             ->withServiceAccount($serviceAccount)

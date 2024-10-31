@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>{{ $title }} - Administration</title>
+    <title>{{ $title }} - KKH</title>
     <!-- [Meta] -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
@@ -38,15 +38,21 @@
     <!-- [Template CSS Files] -->
     <link rel="stylesheet" href="{{ asset('dashboard') }}/assets/css/style.css" id="main-style-link" />
     <link rel="stylesheet" href="{{ asset('dashboard') }}/assets/css/style-preset.css" />
+    <link rel="stylesheet" href="{{ asset('dashboard') }}/assets/css/uikit.css" />
 
+    {{-- Sweetalert2 --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 
+
+
 <body data-pc-preset="preset-1" data-pc-sidebar-theme="light" data-pc-sidebar-caption="true" data-pc-direction="ltr"
-    data-pc-theme="light">
-    <!-- [ Pre-loader ] start -->
-    <div class="loader-bg">
-        <div class="loader-track">
-            <div class="loader-fill"></div>
-        </div>
+data-pc-theme="light">
+<!-- [ Pre-loader ] start -->
+<div class="loader-bg">
+    <div class="loader-track">
+        <div class="loader-fill"></div>
     </div>
+</div>
+@include('notification')

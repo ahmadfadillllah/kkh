@@ -53,24 +53,35 @@
                                         <th>Tanggal</th>
                                         <th>NIK</th>
                                         <th>Nama</th>
+                                        <th>Departemen</th>
                                         <th>Total Durasi Tidur</th>
                                         <th>Keluhan</th>
                                         <th>Keterangan</th>
+                                        <th>Shift</th>
                                         <th>Opsi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>28-10-2024</td>
-                                        <td>0721ABM</td>
-                                        <td>Ahmad Ibrahim</td>
-                                        <td>6 Jam 5 Menit</td>
-                                        <td>Fit</td>
-                                        <td>Tidur Cukup</td>
-                                        <td><span class="badge bg-success">Detail</span></td>
-                                    </tr>
-
+                                    @foreach ($combinedData as $nik => $data)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ isset($data['kkhData']['tanggalKirim']) ? \Carbon\Carbon::parse($data['kkhData']['tanggalKirim'])->translatedFormat('d F Y H:i') : 'Not Found' }}</td>
+                                            <td>{{ $nik ?? 'Not Found' }}</td>
+                                            <td>{{ $data['user']['name'] ?? 'Not Found' }}</td>
+                                            <td>{{ $data['user']['department'] ?? 'Not Found' }}</td>
+                                            <td>{{ $data['totalDurasiTidur'] ?? 'Not Found' }}</td>
+                                            <td>{{ $data['kkhData']['keluhan'] ?? 'Not Found' }}</td>
+                                            <td>
+                                                @if ($data['keterangan'] === 'Cukup')
+                                                    <span class="badge rounded-pill text-bg-secondary">Cukup</span>
+                                                @else
+                                                    <span class="badge rounded-pill text-bg-danger">Kurang Tidur</span>
+                                                @endif
+                                            </td>
+                                            <td>{{ $data['kkhData']['shift'] ?? 'Not Found' }}</td>
+                                            <td><span class="badge bg-success">Detail</span></td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                                 <tfoot>
                                     <tr>
@@ -78,9 +89,11 @@
                                         <th>Tanggal</th>
                                         <th>NIK</th>
                                         <th>Nama</th>
+                                        <th>Departemen</th>
                                         <th>Total Durasi Tidur</th>
                                         <th>Keluhan</th>
                                         <th>Keterangan</th>
+                                        <th>Shift</th>
                                         <th>Opsi</th>
                                     </tr>
                                 </tfoot>

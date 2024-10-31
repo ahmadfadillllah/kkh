@@ -2,6 +2,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   setTimeout(function () {
     floatchart();
+    chartdashboard();
   }, 500);
 });
 
@@ -369,70 +370,7 @@ function floatchart() {
     chart_overview_bar.render();
 
     // performance chart
-    var options_performance = {
-      chart: {
-        height: 250,
-        type: 'donut'
-      },
-      series: [27, 23, 20],
-      colors: ['#1DC4E9', '#899ED4', '#38B9E7'],
-      labels: ['Kurang Tidur', 'Fit', 'Shift'],
-      fill: {
-        opacity: [1, 1, 1, 0.3]
-      },
-      legend: {
-        show: false
-      },
-      plotOptions: {
-        pie: {
-          donut: {
-            size: '65%',
-            labels: {
-              show: true,
-              name: {
-                show: true
-              },
-              value: {
-                show: true
-              }
-            }
-          }
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      responsive: [
-        {
-          breakpoint: 575,
-          options: {
-            chart: {
-              height: 250
-            },
-            plotOptions: {
-              pie: {
-                donut: {
-                  size: '65%',
-                  labels: {
-                    show: false
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
-          breakpoint: 1182,
-          options: {
-            chart: {
-              height: 190
-            }
-          }
-        }
-      ]
-    };
-    var chart_performance = new ApexCharts(document.querySelector('#performance-chart'), options_performance);
-    chart_performance.render();
+
 
     // project rating chart
     var options_project_rating = {
@@ -557,157 +495,7 @@ function floatchart() {
     chart_rewards.render();
 
     // total earning chart
-    var options_total_earning = {
-      series: [30],
-      chart: {
-        height: 150,
-        type: 'radialBar'
-      },
-      plotOptions: {
-        radialBar: {
-          hollow: {
-            margin: 0,
-            size: '60%',
-            background: 'transparent',
-            imageOffsetX: 0,
-            imageOffsetY: 0,
-            position: 'front'
-          },
-          track: {
-            background: '#1DC4E9',
-            strokeWidth: '50%'
-          },
 
-          dataLabels: {
-            show: true,
-            name: {
-              show: false
-            },
-            value: {
-              formatter: function (val) {
-                return parseInt(val);
-              },
-              offsetY: 7,
-              color: '#1DC4E9',
-              fontSize: '20px',
-              fontWeight: '700',
-              show: true
-            }
-          }
-        }
-      },
-      colors: ['#1DC4E9'],
-      fill: {
-        type: 'solid'
-      },
-      stroke: {
-        lineCap: 'round'
-      }
-    };
-    var chart_total_earning = new ApexCharts(document.querySelector('#total-earning-chart-1'), options_total_earning);
-    chart_total_earning.render();
-
-    //  total earning chart 2
-    var options_total_earning_2 = {
-      series: [30],
-      chart: {
-        height: 150,
-        type: 'radialBar'
-      },
-      plotOptions: {
-        radialBar: {
-          hollow: {
-            margin: 0,
-            size: '60%',
-            background: 'transparent',
-            imageOffsetX: 0,
-            imageOffsetY: 0,
-            position: 'front'
-          },
-          track: {
-            background: '#1DE9B650',
-            strokeWidth: '50%'
-          },
-
-          dataLabels: {
-            show: true,
-            name: {
-              show: false
-            },
-            value: {
-              formatter: function (val) {
-                return parseInt(val);
-              },
-              offsetY: 7,
-              color: '#1DE9B6',
-              fontSize: '20px',
-              fontWeight: '700',
-              show: true
-            }
-          }
-        }
-      },
-      colors: ['#1DE9B6'],
-      fill: {
-        type: 'solid'
-      },
-      stroke: {
-        lineCap: 'round'
-      }
-    };
-    var chart_total_earning_2 = new ApexCharts(document.querySelector('#total-earning-chart-2'), options_total_earning_2);
-    chart_total_earning_2.render();
-
-    //  total earning chart 2
-    var options_total_earning_3 = {
-        series: [30],
-        chart: {
-          height: 150,
-          type: 'radialBar'
-        },
-        plotOptions: {
-          radialBar: {
-            hollow: {
-              margin: 0,
-              size: '60%',
-              background: 'transparent',
-              imageOffsetX: 0,
-              imageOffsetY: 0,
-              position: 'front'
-            },
-            track: {
-              background: '#899ED4',
-              strokeWidth: '50%'
-            },
-
-            dataLabels: {
-              show: true,
-              name: {
-                show: false
-              },
-              value: {
-                formatter: function (val) {
-                  return parseInt(val);
-                },
-                offsetY: 7,
-                color: '#899ED4',
-                fontSize: '20px',
-                fontWeight: '700',
-                show: true
-              }
-            }
-          }
-        },
-        colors: ['#899ED4'],
-        fill: {
-          type: 'solid'
-        },
-        stroke: {
-          lineCap: 'round'
-        }
-      };
-      var chart_total_earning_3 = new ApexCharts(document.querySelector('#total-earning-chart-3'), options_total_earning_3);
-      chart_total_earning_3.render();
 
     // bitcoin chart 1
     var options_bitcoin_1 = {
