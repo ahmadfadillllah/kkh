@@ -40,7 +40,7 @@
                             <i class="ph-duotone ph-user-circle"></i>
                         </span>
                         <span class="pc-mtext">Settings</span></a></li>
-                <li class="pc-item"><a href="../other/sample-page.html" class="pc-link">
+                <li class="pc-item"><a href="{{ route('logout') }}" class="pc-link">
                         <span class="pc-micon">
                             <i class="ph-duotone ph-power"></i>
                         </span>
@@ -69,8 +69,8 @@
                                 aria-expanded="false" data-bs-offset="0,20">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1 me-2">
-                                        <h6 class="mb-0">Jonh Smith</h6>
-                                        <small>Administrator</small>
+                                        <h6 class="mb-0">{{ Auth::user()->name }}</h6>
+                                        <small>{{ Auth::user()->nik }}</small>
                                     </div>
                                     <div class="flex-shrink-0">
                                         <div class="btn btn-icon btn-link-secondary avtar">
@@ -89,7 +89,7 @@
                                     </li>
 
                                     <li>
-                                        <a href="{{ route('auth.logout') }}" class="pc-user-links">
+                                        <a href="{{ route('logout') }}" class="pc-user-links">
                                             <i class="ph-duotone ph-power"></i>
                                             <span>Logout</span>
                                         </a>

@@ -1,6 +1,17 @@
 @include('layout.head', ['title' => 'KKH'])
 @include('layout.sidebar')
 @include('layout.header')
+<style>
+    #dom-jqry {
+        width: 80%; /* Atur lebar tabel sesuai kebutuhan */
+        margin: auto; /* Pusatkan tabel */
+    }
+    #dom-jqry th, #dom-jqry td {
+        padding: 8px; /* Kurangi padding dalam sel */
+        font-size: 14px; /* Atur ukuran font */
+    }
+</style>
+
 <div class="pc-container">
     <div class="pc-content">
         <!-- [ breadcrumb ] start -->
@@ -35,6 +46,7 @@
                         <div class="row align-items-center">
                             <div class="col-md-6">
                                 <h5 class="mb-1">Kesiapan Kerja Harian</h5>
+
                             </div>
                             <div class="col-md-6 d-flex justify-content-end">
                                 {{-- <label class="col-lg-3 col-form-label text-lg-end">Simple Input</label> --}}
@@ -49,6 +61,7 @@
                             <table id="dom-jqry" class="table table-striped table-bordered nowrap">
                                 <thead>
                                     <tr>
+                                        <th>Pilih</th>
                                         <th>No</th>
                                         <th>Tanggal</th>
                                         <th>NIK</th>
@@ -64,6 +77,9 @@
                                 <tbody>
                                     @foreach ($combinedData as $nik => $data)
                                         <tr>
+                                            <td>
+                                                <input type="checkbox" name="select[]" class="rowCheckbox" value="{{ $nik }}">
+                                            </td>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ isset($data['kkhData']['tanggalKirim']) ? \Carbon\Carbon::parse($data['kkhData']['tanggalKirim'])->translatedFormat('d F Y H:i') : 'Not Found' }}</td>
                                             <td>{{ $nik ?? 'Not Found' }}</td>
@@ -79,12 +95,15 @@
                                                 @endif
                                             </td>
                                             <td>{{ $data['kkhData']['shift'] ?? 'Not Found' }}</td>
-                                            <td><span class="badge bg-success">Detail</span></td>
+                                            <td>
+                                                <a href="{{ route('kkh.show', $nik) }}" class="badge bg-info">Detail</a>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                                 <tfoot>
                                     <tr>
+                                        <th>Pilih</th>
                                         <th>No</th>
                                         <th>Tanggal</th>
                                         <th>NIK</th>
@@ -98,6 +117,12 @@
                                     </tr>
                                 </tfoot>
                             </table>
+                            <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+                                <button type="button" class="btn btn-shadow btn-success" id="verifikasiBtn">
+                                    <i class="fas fa-cloud-upload-alt"></i> <span>Verifikasi</span>
+                                </button>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -105,13 +130,7 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function() {
-        $('#dom-jqry').DataTable({
-            responsive: true
-        });
-    });
-</script>
+
 <script>
     // Fungsi untuk format tanggal menjadi string dalam format YYYY-MM-DD
     function formatDate(date) {
@@ -132,7 +151,52 @@
 </script>
 
 @include('layout.footer')
+<script>
+    // Script untuk mengatur checkbox "Pilih Semua"
+    document.getElementById('selectAll').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('.rowCheckbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = this.checked; // Set checkbox sesuai status "Pilih Semua"
+        });
+    });
 
+    // Tambahkan event listener untuk footer "Pilih Semua"
+    document.getElementById('selectAllFooter').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('.rowCheckbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = this.checked; // Set checkbox sesuai status "Pilih Semua"
+        });
+    });
+</script>
+
+<script>
+    document.getElementById('verifikasiBtn').addEventListener('click', function() {
+        const checkboxes = document.querySelectorAll('.rowCheckbox:checked');
+        if (checkboxes.length === 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Peringatan',
+                text: 'Silakan pilih setidaknya satu data sebelum verifikasi!',
+            });
+        } else {
+            Swal.fire({
+                title: 'Konfirmasi Verifikasi',
+                text: 'Apakah Anda yakin ingin memverifikasi data yang dipilih?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Verifikasi!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Tambahkan logika verifikasi di sini, seperti mengirim data ke server
+                    console.log('Data yang dipilih:', Array.from(checkboxes).map(cb => cb.value));
+                    // Misalnya, lakukan pengiriman data atau proses lainnya
+                    Swal.fire('Data telah diverifikasi!', '', 'success');
+                }
+            });
+        }
+    });
+</script>
 
 </body>
 

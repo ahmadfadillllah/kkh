@@ -63,4 +63,9 @@ class KKHController extends Controller
 
         return view('kkh.index', compact('combinedData'));
     }
+
+    public function show($nik)
+    {
+        return redirect()->back()->with('info', 'Maaf fitur dalam pengembangan');
+    }
 }

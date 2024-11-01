@@ -152,11 +152,11 @@
                                                     alt="user-image" class="wid-50 rounded-circle" />
                                             </div>
                                             <div class="flex-grow-1 mx-3">
-                                                <h5 class="mb-0">Carson Darrin</h5>
+                                                <h5 class="mb-0">{{ Auth::user()->name }}</h5>
                                                 <a class="link-primary"
-                                                    href="mailto:carson.darrin@company.io">carson.darrin@company.io</a>
+                                                    href="#">{{ Auth::user()->nik }}</a>
                                             </div>
-                                            <span class="badge bg-primary">PRO</span>
+                                            <span class="badge bg-primary">{{ Auth::user()->departemen }}</span>
                                         </div>
                                     </li>
                                     <li class="list-group-item">
@@ -172,7 +172,7 @@
                                                 <span>Settings</span>
                                             </span>
                                         </a>
-                                        <a href="{{ route('auth.logout') }}" class="dropdown-item">
+                                        <a href="{{ route('logout') }}" class="dropdown-item">
                                             <span class="d-flex align-items-center">
                                                 <i class="ph-duotone ph-power"></i>
                                                 <span>Logout</span>

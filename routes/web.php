@@ -10,15 +10,19 @@ Route::get('/', function () {
     return redirect()->route('dashboards.index');
 });
 
-//firebase
-Route::get('/firebase/showData', [FirebaseController::class, 'showData']);
+//authentication
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'login_post'])->name('login_post');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-//dashboard
-Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
-Route::post('/login', [AuthController::class, 'login_post'])->name('auth.login_post');
-Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+Route::group(['middleware' => ['auth']], function(){
+    //firebase
+    Route::get('/firebase/showData', [FirebaseController::class, 'showData']);
 
-Route::get('/dashboards/index', [DashboardController::class, 'index'])->name('dashboards.index');
+    //dashboard
+    Route::get('/dashboards/index', [DashboardController::class, 'index'])->name('dashboards.index');
 
-//kkh
-Route::get('/kkh/index', [KKHController::class, 'index'])->name('kkh.index');
+    //kkh
+    Route::get('/kkh/index', [KKHController::class, 'index'])->name('kkh.index');
+    Route::get('/kkh/show/{nik}', [KKHController::class, 'show'])->name('kkh.show');
+});

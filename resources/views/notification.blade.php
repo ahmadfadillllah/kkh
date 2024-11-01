@@ -1,19 +1,24 @@
+
 @if (session('success'))
     <script>
-        Swal.fire(
-            'Yaay..',
-            '{{ session('success') }}',
-            'success'
-        )
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "{{ session('success') }}",
+            showConfirmButton: false,
+            timer: 2000
+            });
     </script>
 @endif
 
 @if (session('info'))
     <script>
-        Swal.fire(
-            'Upps..',
-            '{{ session('info') }}',
-            'info'
-        )
+        Swal.fire({
+            position: "top-end",
+            icon: "info",
+            title: "{{ session('info') }}",
+            showConfirmButton: false,
+            timer: 2000
+            });
     </script>
 @endif

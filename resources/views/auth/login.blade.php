@@ -8,9 +8,10 @@
                         <img src="{{ asset('dashboard') }}/assets/images/authentication/img-auth-login.png" alt="images"
                             class="img-fluid mb-3" />
                         <h4 class="f-w-500 mb-1">Selamat datang...</h4>
-                        <p class="mb-3">Login menggunakan akunmu</p>
+                        <p class="mb-3">Login - Authentintcation</p>
                     </div>
-                    <form action="{{ route('auth.login_post') }}" method="post">
+                    @include('notification2')
+                    <form action="{{ route('login_post') }}" method="post">
                         @csrf
                         <div class="mb-3">
                             <input type="text" class="form-control" id="floatingInput" placeholder="NIK" name="nik" />
