@@ -23,8 +23,6 @@
     }
 </style>
 
-
-
 <div class="pc-container">
     <div class="pc-content">
         <!-- [ breadcrumb ] start -->
@@ -34,17 +32,13 @@
                     <div class="col-md-6">
                         <ul class="breadcrumb d-flex align-items-center mb-0">
                             <li class="breadcrumb-item"><a href="javascript: void(0)">Home</a></li>
-                            <li class="breadcrumb-item"><a href="javascript: void(0)">KKH</a></li>
+                            <li class="breadcrumb-item"><a href="javascript: void(0)">KKH Detail</a></li>
                         </ul>
                     </div>
                     <div class="col-md-6 d-flex justify-content-end">
                         <div class="d-flex gap-2">
-                            <button type="button" class="btn btn-shadow btn-success"><i
-                                    class="fas fa-cloud-download-alt"></i> <span>Bundle All Shift</span></button>
-                            <button type="button" class="btn btn-shadow btn-primary"><i
-                                    class="fas fa-cloud-download-alt"></i> <span>Bundle Shift Siang</span></button>
                             <button type="button" class="btn btn-shadow btn-secondary"><i
-                                    class="fas fa-cloud-download-alt"></i> <span>Bundle Shift Malam</span></button>
+                                    class="fas fa-cloud-download-alt"></i> <span>Bundle All Shift</span></button>
                         </div>
                     </div>
                 </div>
@@ -54,12 +48,15 @@
 
             <div class="col-sm-12">
                 <div class="card">
+
                     <div class="card-header">
                         <div class="row align-items-center">
                             <div class="col-md-6">
                                 <h5 class="mb-1">Kesiapan Kerja Harian</h5>
+
                             </div>
                             <div class="col-md-6 d-flex justify-content-end">
+                                {{-- <label class="col-lg-3 col-form-label text-lg-end">Simple Input</label> --}}
                                 <div class="col-lg-6 col-md-9">
                                     <input type="text" class="form-control" id="pc-date_range_picker-1" placeholder="Pilih tanggal" />
                                 </div>
@@ -81,9 +78,6 @@
                                         <th>Keluhan</th>
                                         <th>Keterangan</th>
                                         <th>Shift</th>
-                                        <th>Jam Bangun</th>
-                                        <th>Jam Sampai</th>
-                                        <th>Jam Tidur</th>
                                         <th>Opsi</th>
                                     </tr>
                                 </thead>
@@ -108,11 +102,8 @@
                                                 @endif
                                             </td>
                                             <td>{{ $data['kkhData']['shift'] ?? 'Not Found' }}</td>
-                                            <td>{{ $data['kkhData']['jamBangun'] ?? 'Not Found' }}</td>
-                                            <td>{{ $data['kkhData']['jamSampai'] ?? 'Not Found' }}</td>
-                                            <td>{{ $data['kkhData']['jamTidur'] ?? 'Not Found' }}</td>
                                             <td>
-                                                <a href="{{ route('kkh.show', $nik) }}" class="badge bg-info">Detail</a>
+                                                <a href="#" class="badge bg-info">Download KKH</a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -129,41 +120,29 @@
                                         <th>Keluhan</th>
                                         <th>Keterangan</th>
                                         <th>Shift</th>
-                                        <th>Jam Bangun</th>
-                                        <th>Jam Sampai</th>
-                                        <th>Jam Tidur</th>
                                         <th>Opsi</th>
                                     </tr>
                                 </tfoot>
                             </table>
                         </div>
-                        @if (Auth::user()->departemen != 'Admin')
-                            <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
-                                <button type="button" class="btn btn-shadow btn-success" id="verifikasiBtn">
-                                    <i class="fas fa-cloud-upload-alt"></i> <span>Verifikasi</span>
-                                </button>
-                            </div>
-                        @endif
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
 
 <script>
-
     function formatDate(date) {
         const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Bulan dimulai dari 0
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     }
 
     const today = new Date();
     const yesterday = new Date();
-    yesterday.setDate(today.getDate() - 1);
+    yesterday.setDate(today.getDate() - 1); // Mengatur tanggal kemarin
 
     const input = document.getElementById('pc-date_range_picker-1');
     input.value = `${formatDate(yesterday)} to ${formatDate(today)}`;
@@ -174,14 +153,14 @@
     document.getElementById('selectAll').addEventListener('change', function() {
         const checkboxes = document.querySelectorAll('.rowCheckbox');
         checkboxes.forEach(checkbox => {
-            checkbox.checked = this.checked;
+            checkbox.checked = this.checked; // Set checkbox sesuai status "Pilih Semua"
         });
     });
 
     document.getElementById('selectAllFooter').addEventListener('change', function() {
         const checkboxes = document.querySelectorAll('.rowCheckbox');
         checkboxes.forEach(checkbox => {
-            checkbox.checked = this.checked;
+            checkbox.checked = this.checked; // Set checkbox sesuai status "Pilih Semua"
         });
     });
 </script>
@@ -205,58 +184,13 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    const selectedData = Array.from(checkboxes).map(cb => {
-                        const row = cb.closest('tr');
-                        const nik = cb.value;
-
-                        return {
-                            nik: nik,
-                            tanggalKirim: row.cells[2].textContent.trim(),
-                            nama: row.cells[4].textContent.trim(),
-                            departemen: row.cells[5].textContent.trim(),
-                            totalDurasiTidur: row.cells[6].textContent.trim(),
-                            keluhan: row.cells[7].textContent.trim(),
-                            keterangan: row.cells[8].textContent.trim(),
-                            shift: row.cells[9].textContent.trim(),
-                            jamBangun: row.cells[10].textContent.trim(),
-                            jamSampai: row.cells[11].textContent.trim(),
-                            jamTidur: row.cells[12].textContent.trim(),
-                        };
-                    });
-
-                    console.log('Data yang dipilih:', selectedData);
-
-                    // Mengirim data ke route POST
-                    fetch('{{ route("kkh.verification") }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({ selectedData: selectedData })
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            return response.text().then(text => { throw new Error(text); });
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log('Response:', data);
-                        Swal.fire('Success', data.message, 'success');
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        Swal.fire('Error', 'Terjadi kesalahan saat menyimpan data!', 'error');
-                    });
+                    console.log('Data yang dipilih:', Array.from(checkboxes).map(cb => cb.value));
+                    Swal.fire('Data telah diverifikasi!', '', 'success');
                 }
             });
         }
     });
 </script>
-
-
-
 
 </body>
 

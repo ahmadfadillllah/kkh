@@ -15,14 +15,12 @@ class DashboardController extends Controller
         $kkhData = $data['KKHData'] ?? [];
         $usersData = $data['Users'] ?? [];
 
-        // Inisialisasi variabel untuk menyimpan hasil
         $totalKurangTidur = 0;
         $totalTidakAdaKeluhan = 0;
         $totalShiftPagi = 0;
         $totalShiftMalam = 0;
-        $totalData = 0; // Variabel untuk total data
+        $totalData = 0;
 
-        // Fungsi untuk menghitung durasi tidur
         function calculateSleepDuration($jamTidur, $jamBangun) {
             $tidur = new DateTime($jamTidur);
             $bangun = new DateTime($jamBangun);
@@ -38,20 +36,16 @@ class DashboardController extends Controller
             $tidur = new DateTime($jamTidur);
             $bangun = new DateTime($jamBangun);
 
-            // Jika jam tidur lebih besar dari jam bangun, tambahkan satu hari ke waktu bangun
             if ($tidur > $bangun) {
                 $bangun->modify('+1 day');
             }
 
             $durasi = $bangun->diff($tidur);
 
-            // Menghitung total jam tidur
             $totalJamTidur = $durasi->h + ($durasi->i / 60);
 
-            // Format output menjadi "X jam Y menit"
             $formattedDurasi = $durasi->h . ' jam ' . $durasi->i . ' menit';
 
-            // Keterangan berdasarkan total jam tidur
             $keterangan = $totalJamTidur >= 6 ? 'Cukup' : 'Kurang Tidur';
 
             return [
@@ -60,29 +54,25 @@ class DashboardController extends Controller
             ];
         }
 
-        // Menghitung kategori
         foreach ($kkhData as $id => $data) {
             if (isset($usersData[$id])) {
                 $totalJamTidur = calculateSleepDuration($data['jamTidur'], $data['jamBangun']);
 
-                // Hitung Kurang Tidur
                 if ($totalJamTidur < 6) {
                     $totalKurangTidur++;
                 }
 
-                // Hitung keluhan
                 if ($data['keluhan'] === 'Tidak Ada') {
                     $totalTidakAdaKeluhan++;
                 }
 
-                // Hitung shift
                 if ($data['shift'] === 'Pagi') {
                     $totalShiftPagi++;
                 } elseif ($data['shift'] === 'Malam') {
                     $totalShiftMalam++;
                 }
 
-                $totalData++; // Hitung total data
+                $totalData++;
             }
         }
 
@@ -93,14 +83,13 @@ class DashboardController extends Controller
             'totalTidakAdaKeluhan' => $totalTidakAdaKeluhan,
             'totalShiftPagi' => $totalShiftPagi,
             'totalShiftMalam' => $totalShiftMalam,
-            'totalData' => $totalData, // Tambahkan total data ke hasil
+            'totalData' => $totalData,
         ];
         $combinedData = [];
         foreach ($kkhData as $id => $data) {
             if (isset($usersData[$id])) {
                 $durasiTidur = calculateSleepDuration2($data['jamTidur'], $data['jamBangun']);
 
-                // Tambahkan kondisi untuk memeriksa keterangan
                 if ($durasiTidur['keterangan'] === 'Kurang Tidur') {
                     $combinedData[$id] = [
                         'user' => $usersData[$id],
@@ -111,8 +100,6 @@ class DashboardController extends Controller
             }
         }
 
-
-        // Siapkan data untuk view
         return view('dashboard.index', compact('result', 'combinedData'));
 
     }

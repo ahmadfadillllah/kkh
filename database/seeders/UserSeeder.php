@@ -19,14 +19,14 @@ class UserSeeder extends Seeder
             'name' => 'Administrator',
             'nik' => 'admin',
             'departemen' => 'Admin',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('1234qwer'),
         ]);
 
         User::insert([
-            'name' => 'Ahmad Fadillah',
-            'nik' => '0738abm',
+            'name' => 'User Testing',
+            'nik' => '12345',
             'departemen' => 'Produksi',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('1234qwer'),
         ]);
     }
 }

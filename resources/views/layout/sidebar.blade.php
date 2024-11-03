@@ -29,6 +29,14 @@
                         <span class="pc-mtext">KKH</span>
                     </a>
                 </li>
+                {{-- <li class="pc-item">
+                    <a href="{{ route('verifikasi.index') }}" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ph-duotone ph-identification-card"></i>
+                        </span>
+                        <span class="pc-mtext">Verifikasi</span>
+                    </a>
+                </li> --}}
 
                 <li class="pc-item pc-caption">
                     <label>Other</label>
