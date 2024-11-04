@@ -13,7 +13,7 @@
     <meta name="author" content="phoenixcoded" />
 
     <!-- [Favicon] icon -->
-    <link rel="icon" href="{{ asset('dashboard') }}/assets/images/logo.png" type="image/x-icon" />
+    <link rel="icon" href="{{ asset('dashboard') }}/assets/images/favicon.svg" type="image/x-icon" />
 
     <!-- data tables css -->
     <link rel="stylesheet" href="{{ asset('dashboard') }}/assets/css/plugins/dataTables.bootstrap5.min.css" />
