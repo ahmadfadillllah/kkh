@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect()->route('dashboards.index');
 });
+Route::get('/firebase/showData', [FirebaseController::class, 'showData']);
 
 //authentication
 Route::get('/login', [AuthController::class, 'login'])->name('login');
@@ -18,7 +19,6 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => ['auth']], function(){
     //firebase
-    Route::get('/firebase/showData', [FirebaseController::class, 'showData']);
 
     //dashboard
     Route::get('/dashboards/index', [DashboardController::class, 'index'])->name('dashboards.index');

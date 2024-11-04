@@ -14,15 +14,16 @@ abstract class Controller
 
         $factory = (new Factory)
             ->withServiceAccount($serviceAccount)
-            ->withDatabaseUri('https://application-63b0a-default-rtdb.firebaseio.com/');
+            ->withDatabaseUri('https://kkh-sims-default-rtdb.firebaseio.com/');
 
-        $this->apiFirebase = $factory->createDatabase();
+        $coba = $this->apiFirebase = $factory->createDatabase();
     }
 
     public function getDataFireBase()
         {
             $snapshot = $this->apiFirebase->getReference()->getSnapshot();
             $data = $snapshot->getValue();
+            dd($data);
 
             return response()->json($data);
         }
