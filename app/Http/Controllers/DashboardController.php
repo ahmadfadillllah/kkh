@@ -8,10 +8,15 @@ use DateTime;
 class DashboardController extends Controller
 {
     //
-    public function index(){
+    public function index()
+    {
+        $client = new \GuzzleHttp\Client();
+        $data = $this->getDataFireBase();
 
-        $response = $this->getDataFireBase();
-        $data = json_decode($response->getContent(), true);
+        if (isset($data['error'])) {
+            return $data;
+        }
+
         $kkhData = $data['KKHData'] ?? [];
         $usersData = $data['Users'] ?? [];
 
@@ -22,8 +27,8 @@ class DashboardController extends Controller
         $totalData = 0;
 
         function calculateSleepDuration($jamTidur, $jamBangun) {
-            $tidur = new DateTime($jamTidur);
-            $bangun = new DateTime($jamBangun);
+            $tidur = new \DateTime($jamTidur);
+            $bangun = new \DateTime($jamBangun);
 
             if ($tidur > $bangun) {
                 $bangun->modify('+1 day');
@@ -33,19 +38,16 @@ class DashboardController extends Controller
         }
 
         function calculateSleepDuration2($jamTidur, $jamBangun) {
-            $tidur = new DateTime($jamTidur);
-            $bangun = new DateTime($jamBangun);
+            $tidur = new \DateTime($jamTidur);
+            $bangun = new \DateTime($jamBangun);
 
             if ($tidur > $bangun) {
                 $bangun->modify('+1 day');
             }
 
             $durasi = $bangun->diff($tidur);
-
             $totalJamTidur = $durasi->h + ($durasi->i / 60);
-
             $formattedDurasi = $durasi->h . ' jam ' . $durasi->i . ' menit';
-
             $keterangan = $totalJamTidur >= 6 ? 'Cukup' : 'Kurang Tidur';
 
             return [
@@ -76,8 +78,6 @@ class DashboardController extends Controller
             }
         }
 
-
-
         $result = [
             'totalKurangTidur' => $totalKurangTidur,
             'totalTidakAdaKeluhan' => $totalTidakAdaKeluhan,
@@ -85,6 +85,7 @@ class DashboardController extends Controller
             'totalShiftMalam' => $totalShiftMalam,
             'totalData' => $totalData,
         ];
+
         $combinedData = [];
         foreach ($kkhData as $id => $data) {
             if (isset($usersData[$id])) {
@@ -101,6 +102,5 @@ class DashboardController extends Controller
         }
 
         return view('dashboard.index', compact('result', 'combinedData'));
-
     }
 }

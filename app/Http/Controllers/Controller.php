@@ -1,30 +1,36 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use GuzzleHttp\Client;
 use Kreait\Firebase\Factory;
 
 abstract class Controller
 {
     //
-    protected $apiFirebase;
-
-    public function __construct()
-    {
-        $serviceAccount = storage_path('application-63b0a-firebase-adminsdk-zwnhv-0af0222886.json');
-
-        $factory = (new Factory)
-            ->withServiceAccount($serviceAccount)
-            ->withDatabaseUri('https://kkh-sims-default-rtdb.firebaseio.com/');
-
-        $coba = $this->apiFirebase = $factory->createDatabase();
-    }
 
     public function getDataFireBase()
         {
-            $snapshot = $this->apiFirebase->getReference()->getSnapshot();
-            $data = $snapshot->getValue();
-            dd($data);
+            $client = new Client();
+            $kkhData = [];
+            $usersData = [];
 
-            return response()->json($data);
+            // Ambil data dari KKHData
+            try {
+                $response1 = $client->get('http://36.67.119.214:3003/KKHData');
+                $kkhData = json_decode($response1->getBody(), true);
+            } catch (\GuzzleHttp\Exception\ClientException $e) {
+                return response()->json(['error' => 'KKHData tidak ditemukan.'], 404);
+            }
+
+            // Ambil data dari Users
+            try {
+                $response2 = $client->get('http://36.67.119.214:3004/Users');
+                $usersData = json_decode($response2->getBody(), true);
+            } catch (\GuzzleHttp\Exception\ClientException $e) {
+                return response()->json(['error' => 'Users tidak ditemukan.'], 404);
+            }
+
+            return ['KKHData' => $kkhData, 'Users' => $usersData];
         }
 }

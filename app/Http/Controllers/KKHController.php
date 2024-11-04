@@ -31,8 +31,12 @@ class KKHController extends Controller
     }
 
     public function index() {
-        $response = $this->getDataFireBase();
-        $data = json_decode($response->getContent(), true);
+        $client = new \GuzzleHttp\Client();
+        $data = $this->getDataFireBase();
+
+        if (isset($data['error'])) {
+            return $data;
+        }
 
         $user = Auth::user();
         $userDepartment = $user->departemen;
@@ -70,8 +74,12 @@ class KKHController extends Controller
 
     public function show($nik)
     {
-        $response = $this->getDataFireBase();
-        $data = json_decode($response->getContent(), true);
+        $$client = new \GuzzleHttp\Client();
+        $data = $this->getDataFireBase();
+
+        if (isset($data['error'])) {
+            return $data;
+        }
 
         $user = Auth::user();
         $userDepartment = $user->departemen;
