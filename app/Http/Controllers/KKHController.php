@@ -74,7 +74,7 @@ class KKHController extends Controller
 
     public function show($nik)
     {
-        $$client = new \GuzzleHttp\Client();
+        $client = new \GuzzleHttp\Client();
         $data = $this->getDataFireBase();
 
         if (isset($data['error'])) {
