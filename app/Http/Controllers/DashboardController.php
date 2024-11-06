@@ -64,9 +64,13 @@ class DashboardController extends Controller
                     $totalKurangTidur++;
                 }
 
-                if ($data['keluhan'] === 'Tidak Ada') {
+                if ($totalJamTidur >= 6) {
                     $totalTidakAdaKeluhan++;
                 }
+
+                // if ($data['keluhan'] === 'Tidak Ada') {
+                //     $totalTidakAdaKeluhan++;
+                // }
 
                 if ($data['shift'] === 'Pagi') {
                     $totalShiftPagi++;
