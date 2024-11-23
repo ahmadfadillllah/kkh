@@ -6,11 +6,8 @@ use App\Models\Verifikasi;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-<<<<<<< HEAD
 use Barryvdh\DomPDF\Facade\Pdf;
-=======
 use Carbon\Carbon;
->>>>>>> 4b83f1490fb4630680377c5e285584bdf40cafcc
 
 class KKHController extends Controller
 {
