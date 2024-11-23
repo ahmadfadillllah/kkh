@@ -6,7 +6,11 @@ use App\Models\Verifikasi;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+<<<<<<< HEAD
 use Barryvdh\DomPDF\Facade\Pdf;
+=======
+use Carbon\Carbon;
+>>>>>>> 4b83f1490fb4630680377c5e285584bdf40cafcc
 
 class KKHController extends Controller
 {
@@ -35,6 +39,9 @@ class KKHController extends Controller
         $client = new \GuzzleHttp\Client();
         $data = $this->getDataFireBase();
 
+        $client = new \GuzzleHttp\Client();
+        $data = $this->getDataFireBase();
+
         if (isset($data['error'])) {
             return $data;
         }
@@ -47,6 +54,19 @@ class KKHController extends Controller
 
         $combinedData = [];
         foreach ($kkhData as $id => $data) {
+
+            $status = 'Not Approved';
+
+            $tanggalKirimKKH = Carbon::parse($data['tanggalKirim'])->format('Y-m-d H:i:s');
+
+            $verifiedData = Verifikasi::where('tanggalKirim', '=', $tanggalKirimKKH)
+                ->where('nik', '=', $usersData[$id]['nik'])
+                ->first();
+
+            if ($verifiedData) {
+                $status = 'Approved';
+            }
+
             if ($userDepartment === 'Admin') {
                 if (isset($usersData[$id])) {
                     $durasiTidur = $this->calculateSleepDuration($data['jamTidur'], $data['jamBangun']);
@@ -54,21 +74,25 @@ class KKHController extends Controller
                         'user' => $usersData[$id],
                         'kkhData' => $data,
                         'totalDurasiTidur' => $durasiTidur['durasi'],
-                        'keterangan' => $durasiTidur['keterangan']
+                        'keterangan' => $durasiTidur['keterangan'],
+                        'status' => $status
                     ];
                 }
             } else {
-                if (isset($usersData[$id]) && $usersData[$id]['department'] === $userDepartment) {
+                if (isset($usersData[$id]) && strtolower($usersData[$id]['department']) === strtolower($userDepartment)) {
                     $durasiTidur = $this->calculateSleepDuration($data['jamTidur'], $data['jamBangun']);
                     $combinedData[$id] = [
                         'user' => $usersData[$id],
                         'kkhData' => $data,
                         'totalDurasiTidur' => $durasiTidur['durasi'],
-                        'keterangan' => $durasiTidur['keterangan']
+                        'keterangan' => $durasiTidur['keterangan'],
+                        'status' => $status
                     ];
                 }
             }
         }
+
+        // dd($combinedData);
 
         return view('kkh.index', compact('combinedData'));
     }
@@ -90,7 +114,7 @@ class KKHController extends Controller
 
         $combinedData = [];
         foreach ($kkhData as $id => $data) {
-            if ($userDepartment === 'Admin') {
+            if ($nik) {
                 if (isset($usersData[$id]) && $usersData[$id]['nik'] === $nik) {
                     $durasiTidur = $this->calculateSleepDuration($data['jamTidur'], $data['jamBangun']);
                     $combinedData[$id] = [
@@ -101,22 +125,29 @@ class KKHController extends Controller
                     ];
                 }
             } else {
-                if (isset($usersData[$id]) && $usersData[$id]['department'] === $userDepartment && $usersData[$id]['nik'] === $nik) {
-                    $durasiTidur = $this->calculateSleepDuration($data['jamTidur'], $data['jamBangun']);
-                    $combinedData[$id] = [
-                        'user' => $usersData[$id],
-                        'kkhData' => $data,
-                        'totalDurasiTidur' => $durasiTidur['durasi'],
-                        'keterangan' => $durasiTidur['keterangan']
-                    ];
+                if ($userDepartment === 'Admin') {
+                    if (isset($usersData[$id]) && $usersData[$id]['nik'] === $nik) {
+                        $durasiTidur = $this->calculateSleepDuration($data['jamTidur'], $data['jamBangun']);
+                        $combinedData[$id] = [
+                            'user' => $usersData[$id],
+                            'kkhData' => $data,
+                            'totalDurasiTidur' => $durasiTidur['durasi'],
+                            'keterangan' => $durasiTidur['keterangan']
+                        ];
+                    }
+                } else {
+                    if (isset($usersData[$id]) && strtolower($usersData[$id]['department']) === strtolower($userDepartment)) {
+                        $durasiTidur = $this->calculateSleepDuration($data['jamTidur'], $data['jamBangun']);
+                        $combinedData[$id] = [
+                            'user' => $usersData[$id],
+                            'kkhData' => $data,
+                            'totalDurasiTidur' => $durasiTidur['durasi'],
+                            'keterangan' => $durasiTidur['keterangan']
+                        ];
+                    }
                 }
             }
         }
-
-        usort($combinedData, function($a, $b) {
-            return strtotime($b['tanggalKirim']) - strtotime($a['tanggalKirim']);
-        });
-
 
         return view('kkh.show', compact('combinedData'));
     }

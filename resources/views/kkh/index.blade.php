@@ -95,7 +95,7 @@
                                     <tr>
                                         <th>Pilih</th>
                                         <th>No</th>
-                                        <th>Tanggal</th>
+                                        <th>Tanggal Kirim</th>
                                         <th>NIK</th>
                                         <th>Nama</th>
                                         <th>Departemen</th>
@@ -106,6 +106,7 @@
                                         <th>Jam Bangun</th>
                                         <th>Jam Sampai</th>
                                         <th>Jam Tidur</th>
+                                        <th>Status Approve</th>
                                         <th>Opsi</th>
                                     </tr>
                                 </thead>
@@ -113,10 +114,12 @@
                                     @foreach ($combinedData as $nik => $data)
                                         <tr>
                                             <td>
-                                                <input type="checkbox" name="select[]" class="rowCheckbox" value="{{ $nik }}">
+                                                @if ($data['status'] != 'Approved')
+                                                    <input type="checkbox" name="select[]" class="rowCheckbox" value="{{ $nik }}">
+                                                @endif
                                             </td>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ isset($data['kkhData']['tanggalKirim']) ? \Carbon\Carbon::parse($data['kkhData']['tanggalKirim'])->translatedFormat('d F Y H:i') : 'Not Found' }}</td>
+                                            <td>{{ $data['kkhData']['tanggalKirim'] ?? 'Not Found' }}</td>
                                             <td>{{ $nik ?? 'Not Found' }}</td>
                                             <td>{{ $data['user']['name'] ?? 'Not Found' }}</td>
                                             <td>{{ $data['user']['department'] ?? 'Not Found' }}</td>
@@ -124,9 +127,9 @@
                                             <td>{{ $data['kkhData']['keluhan'] ?? 'Not Found' }}</td>
                                             <td>
                                                 @if ($data['keterangan'] === 'Cukup')
-                                                    <span class="badge rounded-pill text-bg-secondary">Cukup</span>
+                                                    <span class="badge rounded-pill text-bg-secondary">{{ $data['keterangan'] }}</span>
                                                 @else
-                                                    <span class="badge rounded-pill text-bg-danger">Kurang Tidur</span>
+                                                    <span class="badge rounded-pill text-bg-danger">{{ $data['keterangan'] }}</span>
                                                 @endif
                                             </td>
                                             <td>{{ $data['kkhData']['shift'] ?? 'Not Found' }}</td>
@@ -134,7 +137,18 @@
                                             <td>{{ $data['kkhData']['jamSampai'] ?? 'Not Found' }}</td>
                                             <td>{{ $data['kkhData']['jamTidur'] ?? 'Not Found' }}</td>
                                             <td>
+<<<<<<< HEAD
                                                 <a href="{{ route('kkh.show', $nik) }}" class="badge bg-info">Histori</a>
+=======
+                                                @if ($data['status'] === 'Approved')
+                                                    <span class="badge rounded-pill text-bg-success">{{ $data['status'] }}</span>
+                                                @else
+                                                    <span class="badge rounded-pill text-bg-dark">{{ $data['status'] }}</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('kkh.show', $nik) }}" class="badge bg-info">Detail</a>
+>>>>>>> 4b83f1490fb4630680377c5e285584bdf40cafcc
                                             </td>
                                         </tr>
                                     @endforeach
@@ -143,7 +157,7 @@
                                     <tr>
                                         <th>Pilih</th>
                                         <th>No</th>
-                                        <th>Tanggal</th>
+                                        <th>Tanggal Kirim</th>
                                         <th>NIK</th>
                                         <th>Nama</th>
                                         <th>Departemen</th>
@@ -154,6 +168,7 @@
                                         <th>Jam Bangun</th>
                                         <th>Jam Sampai</th>
                                         <th>Jam Tidur</th>
+                                        <th>Status Approve</th>
                                         <th>Opsi</th>
                                     </tr>
                                 </tfoot>
@@ -266,6 +281,13 @@
                     .then(data => {
                         console.log('Response:', data);
                         Swal.fire('Success', data.message, 'success');
+
+                        // Reload DataTable jika menggunakan DataTables
+                        if (typeof $('#example').DataTable === 'function') {
+                            $('#example').DataTable().ajax.reload(null, false);
+                        }
+
+                        location.reload();
                     })
                     .catch(error => {
                         console.error('Error:', error);
@@ -276,6 +298,7 @@
         }
     });
 </script>
+
 
 
 
