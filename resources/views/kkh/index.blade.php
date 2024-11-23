@@ -5,6 +5,28 @@
     .table-responsive {
         overflow-x: auto; /* Tambahkan scroll horizontal jika perlu */
     }
+    body{
+        page-break-after: always;
+    }
+    @media print {
+            @page {
+                size: A4 landscape;
+                margin: 20mm;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            .container {
+                page-break-after: always;
+            }
+
+            /* .container:last-child {
+                page-break-after: auto;
+            } */
+        }
 
     #dom-jqry {
         width: 100%; /* Pastikan tabel menggunakan 100% dari container */
@@ -39,12 +61,12 @@
                     </div>
                     <div class="col-md-6 d-flex justify-content-end">
                         <div class="d-flex gap-2">
-                            <button type="button" class="btn btn-shadow btn-success"><i
-                                    class="fas fa-cloud-download-alt"></i> <span>Bundle All Shift</span></button>
-                            <button type="button" class="btn btn-shadow btn-primary"><i
-                                    class="fas fa-cloud-download-alt"></i> <span>Bundle Shift Siang</span></button>
-                            <button type="button" class="btn btn-shadow btn-secondary"><i
-                                    class="fas fa-cloud-download-alt"></i> <span>Bundle Shift Malam</span></button>
+                            <a href="{{ route('kkh.download', 'all') }}" class="btn btn-shadow btn-success"><i
+                                    class="fas fa-cloud-download-alt"></i> <span>Bundle All Shift</span></a>
+                            <a href="{{ route('kkh.download', 'siang') }}" class="btn btn-shadow btn-primary"><i
+                                    class="fas fa-cloud-download-alt"></i> <span>Bundle Shift Siang</span></a>
+                            <a href="{{ route('kkh.download', 'malam') }}" class="btn btn-shadow btn-secondary"><i
+                                    class="fas fa-cloud-download-alt"></i> <span>Bundle Shift Malam</span></a>
                         </div>
                     </div>
                 </div>
@@ -112,7 +134,7 @@
                                             <td>{{ $data['kkhData']['jamSampai'] ?? 'Not Found' }}</td>
                                             <td>{{ $data['kkhData']['jamTidur'] ?? 'Not Found' }}</td>
                                             <td>
-                                                <a href="{{ route('kkh.show', $nik) }}" class="badge bg-info">Detail</a>
+                                                <a href="{{ route('kkh.show', $nik) }}" class="badge bg-info">Histori</a>
                                             </td>
                                         </tr>
                                     @endforeach

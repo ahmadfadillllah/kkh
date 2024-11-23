@@ -6,6 +6,7 @@ use App\Models\Verifikasi;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class KKHController extends Controller
 {
@@ -141,6 +142,87 @@ class KKHController extends Controller
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Data gagal disimpan!', 'error' => $th->getMessage()], 500);
         }
+    }
+
+    public function download( $shift)
+    {
+
+        $client = new \GuzzleHttp\Client();
+        $data = $this->getDataFireBase();
+
+        if (isset($data['error'])) {
+            return $data;
+        }
+
+        $user = Auth::user();
+        $userDepartment = $user->departemen;
+
+        $kkhData = $data['KKHData'] ?? [];
+        $usersData = $data['Users'] ?? [];
+
+        $combinedData = [];
+        foreach ($kkhData as $id => $data) {
+            if ($userDepartment === 'Admin') {
+                if (isset($usersData[$id])) {
+                    $durasiTidur = $this->calculateSleepDuration($data['jamTidur'], $data['jamBangun']);
+                    $combinedData[$id] = [
+                        'user' => $usersData[$id],
+                        'kkhData' => $data,
+                        'totalDurasiTidur' => $durasiTidur['durasi'],
+                        'keterangan' => $durasiTidur['keterangan']
+                    ];
+                }
+            } else {
+                if (isset($usersData[$id]) && $usersData[$id]['department'] === $userDepartment) {
+                    $durasiTidur = $this->calculateSleepDuration($data['jamTidur'], $data['jamBangun']);
+                    $combinedData[$id] = [
+                        'user' => $usersData[$id],
+                        'kkhData' => $data,
+                        'totalDurasiTidur' => $durasiTidur['durasi'],
+                        'keterangan' => $durasiTidur['keterangan']
+                    ];
+                }
+            }
+        }
+
+        // $shiftData = [
+        //     'Siang' => [],
+        //     'Malam' => [],
+        // ];
+
+        // // Iterasi melalui semua data untuk mengambil informasi terkait shift dan KKH
+        // foreach ($combinedData as $nik => $data) {
+        //     // Ambil data user dan KKH
+        //     $userData = $data['user'];
+        //     $kkhData = $data['kkhData'];
+
+        //     // Membuat struktur data yang akan dimasukkan ke dalam shiftData
+        //     $userInfo = [
+        //         'nik' => $nik,
+        //         'name' => $userData['name'],
+        //         'department' => $userData['department'],
+        //         'shift' => $kkhData['shift'],
+        //         'tanggalKirim' => \Carbon\Carbon::parse($kkhData['tanggalKirim'])->translatedFormat('d F Y H:i'),
+        //         'jamTidur' => $kkhData['jamTidur'],
+        //         'jamBangun' => $kkhData['jamBangun'],
+        //         'keluhan' => $kkhData['keluhan'],
+        //         'totalDurasiTidur' => $data['totalDurasiTidur'],
+        //         'keterangan' => $data['keterangan'],
+        //     ];
+
+        //     // Kelompokkan data berdasarkan shift dan tampung seluruh data pengguna di shift tersebut
+        //     if (isset($kkhData['shift']) && array_key_exists($kkhData['shift'], $shiftData)) {
+        //         $shiftData[$kkhData['shift']][] = $userInfo;
+        //     }
+        // }
+
+        // // Menampilkan data yang dikelompokkan berdasarkan shift (untuk debugging)
+        // dd($shiftData);
+
+        $pdf = PDF::loadView('kkh.download', array(
+            'combinedData' => $combinedData,
+        ))->setPaper('a4', 'landscape');
+        return $pdf->download('Bundle_KKH.pdf');
     }
 
 

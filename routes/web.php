@@ -25,6 +25,7 @@ Route::group(['middleware' => ['auth']], function(){
 
     //kkh
     Route::get('/kkh/index', [KKHController::class, 'index'])->name('kkh.index');
+    Route::get('/kkh/download/{shift}', [KKHController::class, 'download'])->name('kkh.download');
     Route::post('/kkh/verification', [KKHController::class, 'verification'])->name('kkh.verification');
     Route::get('/kkh/show/{nik}', [KKHController::class, 'show'])->name('kkh.show');
 
